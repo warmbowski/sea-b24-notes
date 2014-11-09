@@ -5,7 +5,7 @@ var app = express();
 
 app.use(bodyparser.json());
 
-mongoose.connect(process.env.MONGOLAB_URI || mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/notes_development');
+mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGO_URL || 'mongodb://localhost/notes_development');
 
 require('./routes/notes_routes')(app);
 
