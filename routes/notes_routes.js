@@ -28,7 +28,7 @@ module.exports = function(app) {
     var note = req.body;
     delete note._id;
     Note.findOneAndUpdate({'_id': req.params.id}, note, function(err, data) {
-      if (err) return res.status(500).send(data);
+      if (err) return res.status(500).send(err.errors);
       res.json(data);
     });
   });
