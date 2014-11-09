@@ -69,7 +69,6 @@ describe('basic notes crud', function() {
     .post('/api/notes')
     .send({noteBody: 'ab'})
     .end(function(err, res) {
-      //console.log(res.body)
       expect(err).to.eql(null);
       expect(res.status).to.eql(500);
       expect(res.body.noteBody.message).to.eql('Too Short! Not a note.')
