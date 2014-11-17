@@ -15,7 +15,7 @@ describe('basic user crud', function() {
   it('should create a new user', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: randomEmail, password: 'test'})
+    .send({email: randomEmail, password: 'foobarfoo'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
@@ -27,7 +27,7 @@ describe('basic user crud', function() {
   it('should log in an existing user', function(done) {
     chai.request('http://localhost:3000')
     .get('/api/users')
-    .auth(randomEmail, 'test')
+    .auth(randomEmail, 'foobarfoo')
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
@@ -36,6 +36,29 @@ describe('basic user crud', function() {
     });
   }); 
 
-  it('should not create a duplicate user');
-  it('should not allow short passwords');
+  it('should not allow users to GET /api/admins', function(done) {
+    chai.request('http://localhost:3000')
+    .get('/api/admins')
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.text).to.eql('access denied');
+      done();
+    });
+  });
+
+  it('should not create a duplicate user', function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/users')
+    .send({email: randomEmail, password: 'foobarfoo'})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.status).to.eql(500);
+      expect(res.text).to.eql('cannot create that user');
+      done();
+    });
+  });
+
+  
+  it('should expire the jwt after a period of time');
 });

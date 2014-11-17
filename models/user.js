@@ -7,14 +7,14 @@ var moment = require('moment');
 var userSchema = mongoose.Schema({
   basic: {
     email: {type: String},
-    password: {type: String},
-    isAdmin: {type: Boolean}
+    password: {type: String, validate: [validPassword, 'Too Short!']},
+    isAdmin: {type: Boolean, default: false}
   }
 });
 
-// function isEmail(v) {
-//   return v;
-// }
+function validPassword(v) {
+  return v.length > 7;
+}
 
 userSchema.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
@@ -28,6 +28,7 @@ userSchema.methods.generateToken = function(secret) {
   var self = this;
   var token = jwt.encode({
     iss: self._id,
+    is_admin: self.basic.isAdmin,
     exp: moment().add(5, 'minute').valueOf()
   }, secret);
   return token;
