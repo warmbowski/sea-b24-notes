@@ -17,9 +17,10 @@ describe('basic notes crud', function() {
   before(function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: randomEmail, password: 'test'})
+    .send({email: randomEmail, password: 'foobarfoo', confirm_pass: 'foobarfoo'})
     .end(function(err, res) {
       jwtToken = res.body.jwt;
+      //console.log(jwtToken)
       done();
     });
   })

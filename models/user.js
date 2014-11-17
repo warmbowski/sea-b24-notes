@@ -7,14 +7,10 @@ var moment = require('moment');
 var userSchema = mongoose.Schema({
   basic: {
     email: {type: String},
-    password: {type: String, validate: [validPassword, 'Too Short!']},
+    password: {type: String},
     isAdmin: {type: Boolean, default: false}
   }
 });
-
-function validPassword(v) {
-  return v.length > 7;
-}
 
 userSchema.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
