@@ -62,10 +62,10 @@ describe('basic user crud', function() {
   it('should not allow new passwords shorter than 8 char in length', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: 'shorty@example.com', password: 'test', confirm_pass: 'test'})
+    .send({email: 'tooshort' + randomEmail, password: 'test', confirm_pass: 'test'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.text).to.eql('cannot create that user');
+      expect(res.text).to.eql('password much be at least 8 chars');
       done();
     });
   });
@@ -73,7 +73,7 @@ describe('basic user crud', function() {
   it('should not allow unconfirmed passwords', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: 'twinless@example.com', password: 'foobarfoo', confirm_pass: 'barfoobar'})
+    .send({email: 'twinless' + randomEmail, password: 'foobarfoo', confirm_pass: 'barfoobar'})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.status).to.eql(500);

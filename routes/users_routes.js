@@ -11,6 +11,7 @@ module.exports = function(app, passport) {
     User.findOne({'basic.email': req.body.email}, function(err, user) {
       if (err) return res.status(500).send('server error');
       if (user) return res.status(500).send('cannot create that user');
+      if (req.body.password.length < 7) return res.status(500).send('password much be at least 8 chars');
       if (req.body.password !== req.body.confirm_pass) return res.status(500).send('passwords did not match');
       
       var newUser = new User();
