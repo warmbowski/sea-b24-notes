@@ -14,6 +14,7 @@ var userSchema = mongoose.Schema({
 
 function validPassword(v) {
   return v.length > 7;
+  
 }
 
 userSchema.methods.generateHash = function(password) {
