@@ -4,6 +4,7 @@ var bodyparser = require('body-parser');
 var app = express();
 
 app.use(bodyparser.json());
+app.use(express.static(__dirname + '/build'));
 
 mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/notes_development');
 
