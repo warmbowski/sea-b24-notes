@@ -15,8 +15,6 @@ module.exports = function(app) {
       });
     };
 
-    $scope.index();
-
     $scope.saveNewNote = function() {
       $http({
         method: 'POST',
@@ -35,7 +33,7 @@ module.exports = function(app) {
     $scope.saveNote = function(note) {
       $http({
         method: 'PUT',
-        url: 'api/notes/' + note._id,
+        url: '/api/notes/' + note._id,
         data: note
       })
       .success(function() {

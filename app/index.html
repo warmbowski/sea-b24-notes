@@ -7,7 +7,7 @@
 <body>
   <h1>Notes!</h1>
   <div data-ng-app="notesApp">
-    <div data-ng-controller="notesCtrl">
+    <div data-ng-controller="notesCtrl" data-ng-init="index()">
       <label>New Note:</label></br>
       <input type="text" data-ng-model="newNote.noteBody"/>
       <button data-ng-click="saveNewNote()">Save Note</button>
