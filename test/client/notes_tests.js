@@ -23,6 +23,7 @@ describe('NotesController', function() {
   describe('rest request', function() {
     beforeEach(angular.mock.inject(function(_$httpBackend_) {
       $httpBackend = _$httpBackend_;
+      $controllerConstructor('notesCtrl', {$scope: $scope});
     }));
 
     afterEach(function() {
@@ -33,7 +34,6 @@ describe('NotesController', function() {
     it('make an call to index', function() {
       $httpBackend.expectGET('/api/notes').respond(200, [{'noteBody': 'test note', '_id': '1'}]);
 
-      $controllerConstructor('notesCtrl', {$scope: $scope});
       $scope.index();
   debugger;
       $httpBackend.flush();
@@ -46,7 +46,6 @@ describe('NotesController', function() {
     
     it('should save a new note', function() {
       $httpBackend.expectPOST('/api/notes').respond(200, {'noteBody': 'test note', '_id': 1});
-      $controllerConstructor('notesCtrl', {$scope: $scope});
       $scope.notes = []; 
       $scope.newNote = {'noteBody': 'test note'};
       $scope.saveNewNote();
@@ -60,7 +59,6 @@ describe('NotesController', function() {
 
     it('it should delete a note', function() {
       $httpBackend.expectDELETE('/api/notes/1').respond(200);
-      $controllerConstructor('notesCtrl', {$scope: $scope});
       var note = {'noteBody':'test note', '_id': 1};
       $scope.notes = [note];
 
@@ -73,7 +71,6 @@ describe('NotesController', function() {
 
     it('it should edit a note', function() {
       $httpBackend.expectPUT('/api/notes/1').respond(200);
-      $controllerConstructor('notesCtrl', {$scope: $scope});
 
       var note = {'noteBody': 'test note', '_id': 1};
       $scope.notes = [note];
