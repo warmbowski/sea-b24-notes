@@ -29,7 +29,6 @@ describe('resource service', function() {
     promise.success(function(data) {
       expect(Array.isArray(data)).toBe(true);
     });
-
     $httpBackend.flush();
   });
 
@@ -40,7 +39,26 @@ describe('resource service', function() {
       expect(data.noteBody).toEqual('hipster ipsum');
       expect(data._id).toEqual('1');
     });
-
     $httpBackend.flush();
   });
+
+  it('should be able to edit a note', function() {
+    $httpBackend.expectPUT('/api/notes/1').respond(200, {'_id': '1', 'noteBody': 'beiber ipsum'});
+    notesService.save({'_id': '1', 'noteBody': 'beiber ipsum'})
+    .success(function(data) {
+      expect(data.noteBody).toEqual('beiber ipsum');
+      expect(data._id).toEqual('1');
+    });
+    $httpBackend.flush();
+  });
+
+  it('should delete a note', function() {
+    $httpBackend.expectDELETE('/api/notes/1').respond(200, {msg: 'success!'});
+    notesService.delete(testNote)
+    .success(function(data) {
+      expect(data.msg).toEqual('success!');
+    });
+    $httpBackend.flush();
+  });
+  
 });
