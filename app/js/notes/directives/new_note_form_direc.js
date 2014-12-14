@@ -6,12 +6,12 @@ module.exports = function(app) {
       restrict: 'EAC',
       templateUrl: 'templates/notes/directives/new_note_form.html',
       scope: {save: '&',
-              fieldname: '='},
+              fieldname: '=',
+              resourcename:'@'},
       controller: function($scope) {
         $scope.saveResource = function() {
-          var newResource = {};
-          newResource[$scope.fieldname] = $scope.resource[$scope.fieldname];
-          $scope.save({resource: newResource});
+          $scope.save({resource: $scope.resource});
+          $scope.resource = null;
         };
       }
     };

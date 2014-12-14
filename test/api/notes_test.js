@@ -10,12 +10,30 @@ var expect = chai.expect;
 
 describe('basic notes crud', function() {
   var id;
+  var randomNum = Math.floor(Math.random() * 99999);
+  var randomEmail = 'fredford' + randomNum + '@example.com';
+  var jwtToken = '';
+  var apiBase = '/v1';
+
+  before(function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/users')
+    .send({email: randomEmail, password: 'foobarfoo', confirm_pass: 'foobarfoo'})
+    .end(function(err, res) {
+      jwtToken = res.body.jwt;
+      //console.log(jwtToken)
+      done();
+    });
+  });
+
   it('should be able to create a note', function(done) {
     chai.request('http://localhost:3000')
-    .post('/api/notes')
+    .post(apiBase + '/api/notes')
+    .set({jwt: jwtToken})
     .send({noteBody: 'hello world', priority: 1})
     .end(function(err, res) {
       expect(err).to.eql(null);
+      expect(res.body).to.not.eql('access denied');
       expect(res.body.noteBody).to.eql('hello world');
       expect(res.body).to.have.property('_id');
       id = res.body._id;
@@ -25,7 +43,8 @@ describe('basic notes crud', function() {
 
   it('should be able to get an index', function(done) {
     chai.request('http://localhost:3000')
-    .get('/api/notes')
+    .get(apiBase + '/api/notes')
+    .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(Array.isArray(res.body)).to.be.true();
@@ -35,7 +54,8 @@ describe('basic notes crud', function() {
 
   it('should be able to get a single note', function(done) {
     chai.request('http://localhost:3000')
-    .get('/api/notes/' + id)
+    .get(apiBase + '/api/notes/' + id)
+    .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.noteBody).to.eql('hello world');
@@ -46,7 +66,8 @@ describe('basic notes crud', function() {
 
   it('should be able to update a note', function(done) {
     chai.request('http://localhost:3000')
-    .put('/api/notes/' + id)
+    .put(apiBase + '/api/notes/' + id)
+    .set({jwt: jwtToken})
     .send({noteBody: 'new note body'})
     .end(function(err, res) {
       expect(err).to.eql(null);
@@ -57,7 +78,8 @@ describe('basic notes crud', function() {
 
   it('should be able to destroy a note', function(done) {
     chai.request('http://localhost:3000')
-    .delete('/api/notes/' + id)
+    .delete(apiBase + '/api/notes/' + id)
+    .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('success!');
@@ -67,7 +89,8 @@ describe('basic notes crud', function() {
 
   it('should cause an error if data invalid', function(done) {
     chai.request('http://localhost:3000')
-    .post('/api/notes')
+    .post(apiBase + '/api/notes')
+    .set({jwt: jwtToken})
     .send({noteBody: 'ab'})
     .end(function(err, res) {
       expect(err).to.eql(null);
