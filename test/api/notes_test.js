@@ -1,3 +1,4 @@
+'use strict';
 process.env.MONGO_URL = 'mongodb://localhost/notes_test';
 var chai = require('chai');
 var chaihttp = require('chai-http');
@@ -27,7 +28,7 @@ describe('basic notes crud', function() {
     .get('/api/notes')
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(Array.isArray(res.body)).to.be.true;
+      expect(Array.isArray(res.body)).to.be.true();
       done();
     });
   });
@@ -63,7 +64,7 @@ describe('basic notes crud', function() {
       done();
     });
   });
-  
+
   it('should cause an error if data invalid', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/notes')
@@ -71,7 +72,7 @@ describe('basic notes crud', function() {
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.status).to.eql(500);
-      expect(res.body.noteBody.message).to.eql('Too Short! Not a note.')
+      expect(res.body.noteBody.message).to.eql('Too Short! Not a note.');
       done();
     });
   });
