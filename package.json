@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "description": "a note taking web app",
   "main": "server.js",
+  "directories": {
+      "test": "test"
+    },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/grunt-cli/bin/grunt"
   },
   "repository": {
     "type": "git",
