@@ -11,8 +11,8 @@ module.exports = function(app) {
       });
     };
 
-    $scope.saveNewNote = function() {
-      notesBackend.saveNew($scope.newNote)
+    $scope.saveNewNote = function(newNote) {
+      notesBackend.saveNew(newNote)
       .success(function(data) {
         $scope.notes.push(data);
         $scope.newNote = null;

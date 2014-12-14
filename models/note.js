@@ -7,7 +7,7 @@ var noteSchema = mongoose.Schema({
 });
 
 function validPriority(v) {
-  if (v < 2 && v > -2) return v;
+  return (v < 2 && v > -2);
 }
 
 function validNoteBody(v) {
