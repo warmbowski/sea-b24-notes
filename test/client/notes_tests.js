@@ -7,6 +7,7 @@ describe('NotesController', function() {
   var $controllerConstructor;
   var $httpBackend;
   var $scope;
+  var $cookies = {jwt: '9999999999999999999'};
 
   beforeEach(angular.mock.module('notesApp'));
 
@@ -20,10 +21,10 @@ describe('NotesController', function() {
     expect(typeof notesController).toBe('object');
   });
 
-  describe('rest request', function() {
+  describe('rest requests', function() {
     beforeEach(angular.mock.inject(function(_$httpBackend_) {
       $httpBackend = _$httpBackend_;
-      $controllerConstructor('notesCtrl', {$scope: $scope});
+      $controllerConstructor('notesCtrl', {$scope: $scope, $cookies: $cookies});
     }));
 
     afterEach(function() {
@@ -31,11 +32,10 @@ describe('NotesController', function() {
       $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('make an call to index', function() {
+    it('should make a call to index', function() {
       $httpBackend.expectGET('/api/notes').respond(200, [{noteBody: 'test note', _id: '1'}]);
 
       $scope.index();
-      //debugger;
       $httpBackend.flush();
 
       expect($scope.notes).toBeDefined();
@@ -57,7 +57,7 @@ describe('NotesController', function() {
       expect($scope.newNote).toBe(null);
     });
 
-    it('it should delete a note', function() {
+    it('should delete a note', function() {
       $httpBackend.expectDELETE('/api/notes/1').respond(200);
       var note = {noteBody:'test note', _id: 1};
       $scope.notes = [note];
@@ -69,7 +69,7 @@ describe('NotesController', function() {
       expect($scope.notes.length).toBe(0);
     });
 
-    it('it should edit a note', function() {
+    it('should edit a note', function() {
       $httpBackend.expectPUT('/api/notes/1').respond(200);
 
       var note = {noteBody: 'test note', _id: 1};

@@ -4,13 +4,10 @@ module.exports = function(app) {
     $scope.errors = [];
     $scope.signIn = function() {
       $scope.errors = [];
-      console.log($scope.user.email);
-      console.log($scope.user.password);
-      $http.defaults.headers.common['Authorization'] = 'Basic ' + $base64.encode($scope.user.email + ':' + $scope.user.password);//jshint ignore:line
-
+      $http.defaults.headers.common.Authorization = 'Basic ' + $base64.encode($scope.user.email + ':' + $scope.user.password);
       $http({
         method: 'GET',
-        url: '/api/users/'
+        url: '/api/users'
       })
       .success(function(data) {
         console.log('success');
@@ -26,14 +23,16 @@ module.exports = function(app) {
 
     $scope.signUp = function() {
       $scope.errors = [];
-      if ($scope.newUser.password !== $scope.newUser.passwordConfirmation) $scope.errors.push({msg: 'password and confirmation did not match'});
-      if (!$scope.newUser.email) $scope.errors.push({msg: 'did note specify a email'});
+      if ($scope.newUser.password !== $scope.newUser.passwordConfirmation) $scope.errors.push({msg: 'Password and confirmation did not match'});
+      if (!$scope.newUser.email) $scope.errors.push({msg: 'Please specify an email address'});
 
       if ($scope.errors.length) return;
 
+      // $http.defaults.headers.common.Authorization = 'Basic ' + $base64.encode($scope.user.email + ':' + $scope.user.password);
+
       $http({
         method: 'POST',
-        url: '/api/users/',
+        url: '/api/users',
         data: $scope.newUser
       })
       .success(function(data) {

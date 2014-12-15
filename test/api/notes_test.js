@@ -13,15 +13,14 @@ describe('basic notes crud', function() {
   var randomNum = Math.floor(Math.random() * 99999);
   var randomEmail = 'fredford' + randomNum + '@example.com';
   var jwtToken = '';
-  var apiBase = '/v1';
+  var apiBase = '';
 
   before(function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: randomEmail, password: 'foobarfoo', confirm_pass: 'foobarfoo'})
+    .send({email: randomEmail, password: 'foobarfoo', passwordConfirmation: 'foobarfoo'})
     .end(function(err, res) {
       jwtToken = res.body.jwt;
-      //console.log(jwtToken)
       done();
     });
   });

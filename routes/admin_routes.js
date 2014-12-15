@@ -21,7 +21,7 @@ module.exports = function(app, jwtSecret) {
       newAdmin.save(function(err, data) {
         if (err) return res.status(500).send('server error');
         if (!data) return res.status(500).send('server error');
-        res.json({'jwt': newAdmin.generateToken(jwtSecret)});
+        res.json({jwt: newAdmin.generateToken(jwtSecret)});
       });
     });
   });

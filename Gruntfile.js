@@ -86,7 +86,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('test:client', ['browserify:test', 'karma:unit']);
-  grunt.registerTask('build', ['jshint', 'clean', 'browserify', 'copy:dev']);
+  grunt.registerTask('build', ['jshint', 'clean', 'browserify:dev', 'copy:dev']);
   grunt.registerTask('test', ['jshint', 'jscs', 'simplemocha', 'test:client']);
   grunt.registerTask('default', 'test');
 };

@@ -7,23 +7,25 @@ var app = express();
 
 mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGO_URL || 'mongodb://localhost/notes_development');
 app.use(bodyparser.json());
+app.use(express.static(__dirname + '/build/'));
+
 app.set('jwtSecret', process.env.JWT_SECRET || 'changethisordie');
-// app.set('secret', process.env.SECRET || 'changethistoo');
+app.set('secret', process.env.SECRET || 'changethistoo');
 
 app.use(passport.initialize());
 
 require('./lib/passport')(passport);
 var jwtauth = require('./lib/jwt_auth')(app.get('jwtSecret'));
-var jwtexpire = require('./lib/jwt_expire');
+//var jwtexpire = require('./lib/jwt_expire');
 var jwtadmin = require('./lib/jwt_admin');
 
 var notesRouter = express.Router();
 notesRouter.use(jwtauth);
-notesRouter.use(jwtexpire);
+//notesRouter.use(jwtexpire);
 
 var adminRouter = express.Router();
 adminRouter.use(jwtauth);
-adminRouter.use(jwtexpire);
+//adminRouter.use(jwtexpire);
 adminRouter.use(jwtadmin);
 
 require('./routes/users_routes')(app, passport);

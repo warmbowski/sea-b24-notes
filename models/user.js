@@ -21,10 +21,10 @@ userSchema.methods.validatePassword = function(password) {
 };
 
 userSchema.methods.generateToken = function(secret) {
-  var self = this;
+  var _this = this;
   var token = jwt.encode({
-    iss: self._id,
-    is_admin: self.basic.isAdmin,
+    iss: _this._id,
+    is_admin: _this.basic.isAdmin,
     exp: moment().add(5, 'minute').valueOf()
   }, secret);
   return token;
