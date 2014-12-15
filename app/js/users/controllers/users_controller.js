@@ -28,12 +28,10 @@ module.exports = function(app) {
 
       if ($scope.errors.length) return;
 
-      // $http.defaults.headers.common.Authorization = 'Basic ' + $base64.encode($scope.user.email + ':' + $scope.user.password);
-
       $http({
         method: 'POST',
         url: '/api/users',
-        data: $scope.newUser
+        data: {obfuscated: $base64.encode(JSON.stringify($scope.newUser))}
       })
       .success(function(data) {
         console.log('success!');

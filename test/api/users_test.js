@@ -12,11 +12,26 @@ describe('basic user crud', function() {
   var randomNum = Math.floor(Math.random() * 99999);
   var randomEmail = 'fredford' + randomNum + '@example.com';
   var jwtToken = '';
+  var encoded = new Buffer(JSON.stringify({
+    email: randomEmail,
+    password: 'foobarfoo',
+    passwordConfirmation: 'foobarfoo'}))
+    .toString('base64');
+  var tooShortEncoded = new Buffer(JSON.stringify({
+    email: 'hello@example.com',
+    password: 'foo',
+    passwordConfirmation: 'foo'}))
+    .toString('base64');
+  var badConfirmEncoded = new Buffer(JSON.stringify({
+    email: 'hello@example.com',
+    password: 'foobarfoo',
+    passwordConfirmation: 'barfoobar'}))
+    .toString('base64');
 
   it('should create a new user', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: randomEmail, password: 'foobarfoo', passwordConfirmation: 'foobarfoo'})
+    .send({obfuscated: encoded})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
@@ -50,7 +65,7 @@ describe('basic user crud', function() {
   it('should not create a duplicate user', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: randomEmail, password: 'foobarfoo', passwordConfirmation: 'foobarfoo'})
+    .send({obfuscated: encoded})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.status).to.eql(500);
@@ -62,7 +77,7 @@ describe('basic user crud', function() {
   it('should not allow new passwords shorter than 6 char in length', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: 'short' + randomEmail, password: 'test', confirm_pass: 'test'})
+    .send({obfuscated: tooShortEncoded})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.text).to.eql('password must be at least 6 chars');
@@ -73,7 +88,7 @@ describe('basic user crud', function() {
   it('should not allow unconfirmed passwords', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: 'twinless' + randomEmail, password: 'foobarfoo', passwordConfirmation: 'barfoobar'})
+    .send({obfuscated: badConfirmEncoded})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.status).to.eql(500);

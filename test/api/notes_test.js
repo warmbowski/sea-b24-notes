@@ -14,11 +14,16 @@ describe('basic notes crud', function() {
   var randomEmail = 'fredford' + randomNum + '@example.com';
   var jwtToken = '';
   var apiBase = '';
+  var encoded = new Buffer(JSON.stringify({
+    email: randomEmail,
+    password: 'foobarfoo',
+    passwordConfirmation: 'foobarfoo'}))
+    .toString('base64');
 
   before(function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: randomEmail, password: 'foobarfoo', passwordConfirmation: 'foobarfoo'})
+    .send({obfuscated: encoded})
     .end(function(err, res) {
       jwtToken = res.body.jwt;
       done();
