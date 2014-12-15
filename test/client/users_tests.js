@@ -60,7 +60,5 @@ describe('UsersController', function() {
 
       expect($cookies).toEqual({jwt: '9999999999999999999'});
     });
-
-    it('should sign out');
   });
 });
