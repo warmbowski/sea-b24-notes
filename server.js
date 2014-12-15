@@ -16,16 +16,16 @@ app.use(passport.initialize());
 
 require('./lib/passport')(passport);
 var jwtauth = require('./lib/jwt_auth')(app.get('jwtSecret'));
-//var jwtexpire = require('./lib/jwt_expire');
+var jwtexpire = require('./lib/jwt_expire');
 var jwtadmin = require('./lib/jwt_admin');
 
 var notesRouter = express.Router();
 notesRouter.use(jwtauth);
-//notesRouter.use(jwtexpire);
+notesRouter.use(jwtexpire);
 
 var adminRouter = express.Router();
 adminRouter.use(jwtauth);
-//adminRouter.use(jwtexpire);
+adminRouter.use(jwtexpire);
 adminRouter.use(jwtadmin);
 
 require('./routes/users_routes')(app, passport);
