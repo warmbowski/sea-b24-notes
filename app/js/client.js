@@ -11,6 +11,7 @@ require('./notes/directives/new_note_form_direc')(notesApp);
 
 //services
 require('./services/resource_backend_service')(notesApp);
+require('./services/auth_check_service')(notesApp);
 
 //controllers
 require('./users/controllers/users_controller')(notesApp);

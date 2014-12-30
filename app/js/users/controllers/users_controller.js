@@ -10,12 +10,10 @@ module.exports = function(app) {
         url: '/api/users'
       })
       .success(function(data) {
-        console.log('success');
         $cookies.jwt = data.jwt;
         $location.path('/notes');
       })
       .error(function(data) {
-        console.log('error!');
         console.log(data);
         $scope.errors.push(data);
       });
@@ -34,7 +32,6 @@ module.exports = function(app) {
         data: {obfuscated: $base64.encode(JSON.stringify($scope.newUser))}
       })
       .success(function(data) {
-        console.log('success!');
         $cookies.jwt = data.jwt;
         $location.path('/notes');
       })
